@@ -1,9 +1,244 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DYICT Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      margin-top: 40px;
+      width: 90%;
+      max-width: 600px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .hidden { display: none; }
+    button {
+      background: #007bff;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    select, input {
+      padding: 8px;
+      margin: 10px 0;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .center { text-align: center; }
+  </style>
+</head>
 <body>
+  <div class="container">
+    <h1>DYICT Register</h1>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+    <!-- Role Selection -->
+    <div id="roleSection">
+      <div class="center">
+        <button onclick="chooseRole('Student')">Student</button>
+        <button onclick="chooseRole('Facilitator')">Facilitator</button>
+        <button onclick="chooseRole('Admin')">Admin</button>
+      </div>
+    </div>
 
+    <!-- Class Selection -->
+    <div id="classSection" class="hidden">
+      <h3>Select your class:</h3>
+      <select id="classSelect">
+        <option value="Safari">Safari</option>
+        <option value="Opera">Opera</option>
+        <option value="Hanna">Hanna</option>
+        <option value="Mozilla">Mozilla</option>
+      </select>
+      <div id="studentInput" class="hidden">
+        <input type="number" id="studentNumber" placeholder="Enter your number (1–25)">
+      </div>
+      <button onclick="proceedAttendance()">Proceed</button>
+      <button onclick="goBack()">Back</button>
+    </div>
+
+    <!-- Attendance Marking -->
+    <div id="attendanceSection" class="hidden">
+      <h3 id="attendancePrompt"></h3>
+      <button onclick="markAttendance('Present')">Present</button>
+      <button onclick="markAttendance('Absent')">Absent</button>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="adminLogin" class="hidden">
+      <h3>Admin Login</h3>
+      <input type="text" id="adminUser" placeholder="Username">
+      <input type="password" id="adminPass" placeholder="Password">
+      <button onclick="adminLogin()">Login</button>
+      <button onclick="goBack()">Back</button>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="hidden">
+      <h3>Admin Panel</h3>
+      <button onclick="viewAttendance()">View Attendance</button>
+      <button onclick="exportAttendance()">Export Attendance</button>
+      <button onclick="logoutAdmin()">Back</button>
+    </div>
+
+    <!-- Attendance Display -->
+    <div id="attendanceDisplay" class="hidden">
+      <h3>Attendance Records</h3>
+      <textarea id="attendanceText" readonly></textarea>
+      <button onclick="closeAttendanceDisplay()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const attendanceLog = [];
+    let currentRole = "";
+    let currentClass = "";
+    let currentName = "";
+
+    const facilitators = {
+      "Safari": "Mr Bila",
+      "Opera": "Mr joseph",
+      "Mozilla": "Mathapelo",
+      "Hanna": "jowi"
+    };
+
+    const students = {
+      "Safari": Array.from({length: 25}, (_, i) => "Safari Student " + (i+1)),
+      "Opera": Array.from({length: 25}, (_, i) => "Opera Student " + (i+1)),
+      "Hanna": Array.from({length: 25}, (_, i) => "Hanna Student " + (i+1)),
+      "Mozilla": Array.from({length: 25}, (_, i) => "Mozilla Student " + (i+1))
+    };
+
+    function chooseRole(role) {
+      currentRole = role;
+      document.getElementById("roleSection").classList.add("hidden");
+      if (role === "Admin") {
+        document.getElementById("adminLogin").classList.remove("hidden");
+      } else {
+        document.getElementById("classSection").classList.remove("hidden");
+        if (role === "Student") {
+          document.getElementById("studentInput").classList.remove("hidden");
+        }
+      }
+    }
+
+    function goBack() {
+      document.querySelectorAll(".container > div").forEach(div => div.classList.add("hidden"));
+      document.getElementById("roleSection").classList.remove("hidden");
+    }
+
+    function proceedAttendance() {
+      currentClass = document.getElementById("classSelect").value;
+      if (currentRole === "Facilitator") {
+        currentName = facilitators[currentClass] || null;
+        if (!currentName) {
+          alert("No facilitator assigned to this class.");
+          goBack();
+          return;
+        }
+      } else {
+        let num = parseInt(document.getElementById("studentNumber").value);
+        if (isNaN(num) || num < 1 || num > 25) {
+          alert("Invalid number input.");
+          return;
+        }
+        currentName = students[currentClass][num-1];
+      }
+      document.getElementById("classSection").classList.add("hidden");
+      document.getElementById("attendanceSection").classList.remove("hidden");
+      document.getElementById("attendancePrompt").innerText =
+        `Hi ${currentName}! Mark your attendance:`;
+    }
+
+    function markAttendance(status) {
+      attendanceLog.push({
+        name: currentName,
+        class: currentClass,
+        role: currentRole,
+        status: status,
+        time: new Date().toLocaleString()
+      });
+      alert(`${currentName} marked as ${status} in ${currentClass}`);
+      goBack();
+    }
+
+    function adminLogin() {
+      const user = document.getElementById("adminUser").value;
+      const pass = document.getElementById("adminPass").value;
+      if (user === "admin" && pass === "1234") {
+        document.getElementById("adminLogin").classList.add("hidden");
+        document.getElementById("adminPanel").classList.remove("hidden");
+      } else {
+        alert("Access Denied. Incorrect credentials.");
+      }
+    }
+
+    function logoutAdmin() {
+      goBack();
+    }
+
+    function viewAttendance() {
+      if (attendanceLog.length === 0) {
+        alert("No attendance has been recorded yet.");
+        return;
+      }
+      document.getElementById("adminPanel").classList.add("hidden");
+      document.getElementById("attendanceDisplay").classList.remove("hidden");
+      let text = "Name, Class, Role, Status, Time\n\n";
+      attendanceLog.forEach(r => {
+        text += `${r.name}, ${r.class}, ${r.role}, ${r.status}, ${r.time}\n`;
+      });
+      document.getElementById("attendanceText").value = text;
+    }
+
+    function closeAttendanceDisplay() {
+      document.getElementById("attendanceDisplay").classList.add("hidden");
+      document.getElementById("adminPanel").classList.remove("hidden");
+    }
+
+    function exportAttendance() {
+      if (attendanceLog.length === 0) {
+        alert("No attendance to export.");
+        return;
+      }
+      let csv = "Name,Class,Role,Status,Time\n";
+      attendanceLog.forEach(r => {
+        csv += `${r.name},${r.class},${r.role},${r.status},${r.time}\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "attendance_log.csv";
+      link.click();
+    }
+  </script>
 </body>
 </html>
