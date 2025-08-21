@@ -118,24 +118,25 @@
   </div>
 
   <script>
+    let students = {};
     const attendanceLog = [];
-    let currentRole = "";
-    let currentClass = "";
-    let currentName = "";
-
     const facilitators = {
       "Safari": "Mr Bila",
       "Opera": "Mr joseph",
       "Mozilla": "Mathapelo",
       "Hanna": "jowi"
     };
+    let currentRole = "";
+    let currentClass = "";
+    let currentName = "";
 
-    const students = {
-      "Safari": Array.from({length: 25}, (_, i) => "Safari Student " + (i+1)),
-      "Opera": Array.from({length: 25}, (_, i) => "Opera Student " + (i+1)),
-      "Hanna": Array.from({length: 25}, (_, i) => "Hanna Student " + (i+1)),
-      "Mozilla": Array.from({length: 25}, (_, i) => "Mozilla Student " + (i+1))
-    };
+    // Load students JSON
+    fetch('students.json')
+      .then(response => response.json())
+      .then(data => {
+        students = data;
+      })
+      .catch(err => alert("Failed to load students.json: " + err));
 
     function chooseRole(role) {
       currentRole = role;
@@ -170,7 +171,7 @@
           alert("Invalid number input.");
           return;
         }
-        currentName = students[currentClass][num-1];
+        currentName = students[currentClass].find(s => s.id === num)?.name;
       }
       document.getElementById("classSection").classList.add("hidden");
       document.getElementById("attendanceSection").classList.remove("hidden");
@@ -201,9 +202,7 @@
       }
     }
 
-    function logoutAdmin() {
-      goBack();
-    }
+    function logoutAdmin() { goBack(); }
 
     function viewAttendance() {
       if (attendanceLog.length === 0) {
