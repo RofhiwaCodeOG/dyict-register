@@ -160,7 +160,8 @@
     let currentRole = "";
     let currentClass = "";
     let currentName = "";
-    let adminPassword = "1234"; // Default password
+    let defaultPassword = "1234";
+    let adminPassword = defaultPassword; // Default password
 
     // Load students JSON
     fetch('students.json')
@@ -301,7 +302,8 @@
     }
 
     function forgotPassword() {
-      alert("Default admin username: admin\nDefault password: 1234 (or the last password you set).");
+      adminPassword = defaultPassword;
+      alert("Password has been reset to default: " + defaultPassword);
     }
   </script>
 </body>
