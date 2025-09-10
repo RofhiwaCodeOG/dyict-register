@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <title>DYICT Register</title>
   <style>
-    /* ===== Global Styles ===== */
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e3f2fd, #f9f9f9);
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
       margin: 0;
       padding: 0;
       display: flex;
@@ -15,134 +14,47 @@
       align-items: flex-start;
       min-height: 100vh;
     }
-
     .container {
       margin-top: 40px;
-      width: 95%;
-      max-width: 650px;
+      width: 90%;
+      max-width: 600px;
       background: #fff;
-      border-radius: 16px;
-      padding: 25px 30px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-      animation: fadeIn 0.5s ease-in-out;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
-
     h1 {
       text-align: center;
-      margin-bottom: 25px;
-      font-size: 28px;
-      color: #2c3e50;
-      letter-spacing: 1px;
+      margin-bottom: 20px;
+      color: #333;
     }
-
-    h3 {
-      margin: 15px 0;
-      font-size: 20px;
-      color: #34495e;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    /* ===== Buttons ===== */
+    .hidden { display: none; }
     button {
       background: #007bff;
       color: #fff;
-      padding: 12px 18px;
+      padding: 10px 15px;
       border: none;
-      border-radius: 8px;
-      margin: 8px;
+      border-radius: 6px;
+      margin: 5px;
       cursor: pointer;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      min-width: 120px;
     }
-
-    button:hover {
-      background: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    button:active {
-      transform: translateY(1px);
-      box-shadow: none;
-    }
-
-    /* ===== Inputs and Selects ===== */
-    select, input, textarea {
-      padding: 10px;
-      margin: 12px 0;
+    button:hover { background: #0056b3; }
+    select, input {
+      padding: 8px;
+      margin: 10px 0;
       width: 100%;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 15px;
-      transition: 0.2s;
+      border-radius: 6px;
     }
-
-    select:focus, input:focus, textarea:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0,123,255,0.5);
-      outline: none;
-    }
-
     textarea {
-      height: 220px;
-      resize: none;
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
-
-    /* ===== Center Utility ===== */
-    .center {
-      text-align: center;
-    }
-
-    /* ===== Animation ===== */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ===== Panels and Sections ===== */
-    #attendancePrompt {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 20px;
-      color: #2c3e50;
-    }
-
-    #attendanceDisplay textarea {
-      background: #f8f9fa;
-      border: 1px solid #ddd;
-      font-family: monospace;
-      font-size: 14px;
-    }
-
-    /* ===== Admin Panel Buttons ===== */
-    #adminPanel button {
-      background: #28a745;
-    }
-
-    #adminPanel button:hover {
-      background: #1e7e34;
-    }
-
-    #adminPanel button:nth-child(2) {
-      background: #ffc107;
-      color: #000;
-    }
-
-    #adminPanel button:nth-child(2):hover {
-      background: #e0a800;
-    }
-
-    #adminPanel button:nth-child(3) {
-      background: #dc3545;
-    }
-
-    #adminPanel button:nth-child(3):hover {
-      background: #c82333;
-    }
+    .center { text-align: center; }
+    .form-group { margin-bottom: 15px; }
   </style>
 </head>
 <body>
@@ -177,10 +89,8 @@
     <!-- Attendance Marking -->
     <div id="attendanceSection" class="hidden">
       <h3 id="attendancePrompt"></h3>
-      <div class="center">
-        <button onclick="markAttendance('Present')">Present</button>
-        <button onclick="markAttendance('Absent')">Absent</button>
-      </div>
+      <button onclick="markAttendance('Present')">Present</button>
+      <button onclick="markAttendance('Absent')">Absent</button>
     </div>
 
     <!-- Admin Login -->
@@ -197,7 +107,21 @@
       <h3>Admin Panel</h3>
       <button onclick="viewAttendance()">View Attendance</button>
       <button onclick="exportAttendance()">Export Attendance</button>
+      <button onclick="showChangePassword()">Change Password</button>
       <button onclick="logoutAdmin()">Back</button>
+    </div>
+
+    <!-- Change Password -->
+    <div id="changePasswordSection" class="hidden">
+      <h3>Change Admin Password</h3>
+      <div class="form-group">
+        <input type="password" id="newPassword" placeholder="Enter new password">
+      </div>
+      <div class="form-group">
+        <input type="password" id="confirmPassword" placeholder="Confirm new password">
+      </div>
+      <button onclick="changePassword()">Save Password</button>
+      <button onclick="cancelChangePassword()">Cancel</button>
     </div>
 
     <!-- Attendance Display -->
@@ -213,20 +137,22 @@
     const attendanceLog = [];
     const facilitators = {
       "Safari": "Mr Bila",
-      "Opera": "Mr Joseph",
+      "Opera": "Mr joseph",
       "Mozilla": "Mathapelo",
-      "Hanna": "Jowi"
+      "Hanna": "jowi"
     };
     let currentRole = "";
     let currentClass = "";
     let currentName = "";
 
+    // Default admin credentials
+    const adminUser = "admin";
+    let adminPassStored = localStorage.getItem("adminPassword") || "1234";
+
     // Load students JSON
     fetch('students.json')
       .then(response => response.json())
-      .then(data => {
-        students = data;
-      })
+      .then(data => { students = data; })
       .catch(err => alert("Failed to load students.json: " + err));
 
     function chooseRole(role) {
@@ -285,7 +211,7 @@
     function adminLogin() {
       const user = document.getElementById("adminUser").value;
       const pass = document.getElementById("adminPass").value;
-      if (user === "admin" && pass === "1234") {
+      if (user === adminUser && pass === adminPassStored) {
         document.getElementById("adminLogin").classList.add("hidden");
         document.getElementById("adminPanel").classList.remove("hidden");
       } else {
@@ -328,6 +254,34 @@
       link.href = URL.createObjectURL(blob);
       link.download = "attendance_log.csv";
       link.click();
+    }
+
+    // Show Change Password Form
+    function showChangePassword() {
+      document.getElementById("adminPanel").classList.add("hidden");
+      document.getElementById("changePasswordSection").classList.remove("hidden");
+    }
+
+    function cancelChangePassword() {
+      document.getElementById("changePasswordSection").classList.add("hidden");
+      document.getElementById("adminPanel").classList.remove("hidden");
+    }
+
+    function changePassword() {
+      const newPass = document.getElementById("newPassword").value;
+      const confirmPass = document.getElementById("confirmPassword").value;
+      if (newPass === "" || confirmPass === "") {
+        alert("Password fields cannot be empty.");
+        return;
+      }
+      if (newPass !== confirmPass) {
+        alert("Passwords do not match!");
+        return;
+      }
+      adminPassStored = newPass;
+      localStorage.setItem("adminPassword", newPass);
+      alert("Password successfully changed!");
+      cancelChangePassword();
     }
   </script>
 </body>
