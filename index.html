@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6f9;
+      background: linear-gradient(135deg, #f4f6f9, #e0eafc);
       margin: 0;
       padding: 0;
       display: flex;
@@ -14,55 +14,65 @@
       align-items: flex-start;
       min-height: 100vh;
     }
+
     .container {
       margin-top: 40px;
       width: 90%;
       max-width: 600px;
       background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
+
     h1 {
       text-align: center;
       margin-bottom: 20px;
-      color: #333;
+      color: #4B0082;
     }
+
+    h3 { color: #333; }
+
     .hidden { display: none; }
+
     button {
-      background: #007bff;
-      color: #fff;
       padding: 10px 15px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       margin: 5px;
       cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+      transition: 0.3s;
     }
-    button:hover { background: #0056b3; }
-    select, input {
-      padding: 8px;
+    button:hover { opacity: 0.9; }
+
+    /* Button Colours */
+    button.primary { background: #007bff; }
+    button.success { background: #28a745; }
+    button.danger { background: #dc3545; }
+    button.warning { background: #fd7e14; }
+
+    select, input, textarea {
+      padding: 10px;
       margin: 10px 0;
       width: 100%;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
     }
-    textarea {
-      width: 100%;
-      height: 200px;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    .center { text-align: center; }
-    .form-group { margin-bottom: 15px; }
+
+    textarea { height: 200px; }
+
     .link {
-      color: #007bff;
+      color: #4B0082;
       cursor: pointer;
       text-decoration: underline;
       display: inline-block;
       margin-top: 10px;
     }
-    .link:hover { color: #0056b3; }
+    .link:hover { color: #6f42c1; }
+
+    .center { text-align: center; }
   </style>
 </head>
 <body>
@@ -72,9 +82,9 @@
     <!-- Role Selection -->
     <div id="roleSection">
       <div class="center">
-        <button onclick="chooseRole('Student')">Student</button>
-        <button onclick="chooseRole('Facilitator')">Facilitator</button>
-        <button onclick="chooseRole('Admin')">Admin</button>
+        <button class="primary" onclick="chooseRole('Student')">Student</button>
+        <button class="primary" onclick="chooseRole('Facilitator')">Facilitator</button>
+        <button class="primary" onclick="chooseRole('Admin')">Admin</button>
       </div>
     </div>
 
@@ -90,15 +100,15 @@
       <div id="studentInput" class="hidden">
         <input type="number" id="studentNumber" placeholder="Enter your number (1–25)">
       </div>
-      <button onclick="proceedAttendance()">Proceed</button>
-      <button onclick="goBack()">Back</button>
+      <button class="primary" onclick="proceedAttendance()">Proceed</button>
+      <button class="danger" onclick="goBack()">Back</button>
     </div>
 
     <!-- Attendance Marking -->
     <div id="attendanceSection" class="hidden">
       <h3 id="attendancePrompt"></h3>
-      <button onclick="markAttendance('Present')">Present</button>
-      <button onclick="markAttendance('Absent')">Absent</button>
+      <button class="success" onclick="markAttendance('Present')">Present</button>
+      <button class="danger" onclick="markAttendance('Absent')">Absent</button>
     </div>
 
     <!-- Admin Login -->
@@ -106,38 +116,35 @@
       <h3>Admin Login</h3>
       <input type="text" id="adminUser" placeholder="Username">
       <input type="password" id="adminPass" placeholder="Password">
-      <button onclick="adminLogin()">Login</button>
-      <button onclick="goBack()">Back</button>
+      <button class="primary" onclick="adminLogin()">Login</button>
+      <button class="danger" onclick="goBack()">Back</button>
       <div class="link" onclick="forgotPassword()">Forgot Password?</div>
     </div>
 
     <!-- Admin Panel -->
     <div id="adminPanel" class="hidden">
       <h3>Admin Panel</h3>
-      <button onclick="viewAttendance()">View Attendance</button>
-      <button onclick="exportAttendance()">Export Attendance</button>
-      <button onclick="showChangePassword()">Change Password</button>
-      <button onclick="logoutAdmin()">Back</button>
-    </div>
-
-    <!-- Change Password -->
-    <div id="changePasswordSection" class="hidden">
-      <h3>Change Admin Password</h3>
-      <div class="form-group">
-        <input type="password" id="newPassword" placeholder="Enter new password">
-      </div>
-      <div class="form-group">
-        <input type="password" id="confirmPassword" placeholder="Confirm new password">
-      </div>
-      <button onclick="changePassword()">Save Password</button>
-      <button onclick="cancelChangePassword()">Cancel</button>
+      <button class="primary" onclick="viewAttendance()">View Attendance</button>
+      <button class="warning" onclick="exportAttendance()">Export Attendance</button>
+      <button class="success" onclick="showChangePassword()">Change Password</button>
+      <button class="danger" onclick="logoutAdmin()">Back</button>
     </div>
 
     <!-- Attendance Display -->
     <div id="attendanceDisplay" class="hidden">
       <h3>Attendance Records</h3>
       <textarea id="attendanceText" readonly></textarea>
-      <button onclick="closeAttendanceDisplay()">Close</button>
+      <button class="danger" onclick="closeAttendanceDisplay()">Close</button>
+    </div>
+
+    <!-- Change Password -->
+    <div id="changePasswordSection" class="hidden">
+      <h3>Change Admin Password</h3>
+      <input type="password" id="oldPass" placeholder="Enter current password">
+      <input type="password" id="newPass" placeholder="Enter new password">
+      <input type="password" id="confirmPass" placeholder="Confirm new password">
+      <button class="success" onclick="changePassword()">Save Password</button>
+      <button class="danger" onclick="cancelChangePassword()">Cancel</button>
     </div>
   </div>
 
@@ -153,10 +160,7 @@
     let currentRole = "";
     let currentClass = "";
     let currentName = "";
-
-    // Default admin credentials
-    const adminUser = "admin";
-    let adminPassStored = localStorage.getItem("adminPassword") || "1234";
+    let adminPassword = "1234"; // Default password
 
     // Load students JSON
     fetch('students.json')
@@ -201,8 +205,7 @@
       }
       document.getElementById("classSection").classList.add("hidden");
       document.getElementById("attendanceSection").classList.remove("hidden");
-      document.getElementById("attendancePrompt").innerText =
-        `Hi ${currentName}! Mark your attendance:`;
+      document.getElementById("attendancePrompt").innerText = `Hi ${currentName}! Mark your attendance:`;
     }
 
     function markAttendance(status) {
@@ -220,7 +223,7 @@
     function adminLogin() {
       const user = document.getElementById("adminUser").value;
       const pass = document.getElementById("adminPass").value;
-      if (user === adminUser && pass === adminPassStored) {
+      if (user === "admin" && pass === adminPassword) {
         document.getElementById("adminLogin").classList.add("hidden");
         document.getElementById("adminPanel").classList.remove("hidden");
       } else {
@@ -265,7 +268,6 @@
       link.click();
     }
 
-    // Show Change Password Form
     function showChangePassword() {
       document.getElementById("adminPanel").classList.add("hidden");
       document.getElementById("changePasswordSection").classList.remove("hidden");
@@ -277,29 +279,29 @@
     }
 
     function changePassword() {
-      const newPass = document.getElementById("newPassword").value;
-      const confirmPass = document.getElementById("confirmPassword").value;
-      if (newPass === "" || confirmPass === "") {
-        alert("Password fields cannot be empty.");
+      const oldPass = document.getElementById("oldPass").value;
+      const newPass = document.getElementById("newPass").value;
+      const confirmPass = document.getElementById("confirmPass").value;
+
+      if (oldPass !== adminPassword) {
+        alert("Current password is incorrect.");
         return;
       }
       if (newPass !== confirmPass) {
-        alert("Passwords do not match!");
+        alert("New passwords do not match.");
         return;
       }
-      adminPassStored = newPass;
-      localStorage.setItem("adminPassword", newPass);
-      alert("Password successfully changed!");
+      if (newPass.trim() === "") {
+        alert("New password cannot be empty.");
+        return;
+      }
+      adminPassword = newPass;
+      alert("Password changed successfully!");
       cancelChangePassword();
     }
 
-    // Forgot Password → reset to default
     function forgotPassword() {
-      if (confirm("Reset admin password to default (1234)?")) {
-        adminPassStored = "1234";
-        localStorage.setItem("adminPassword", "1234");
-        alert("Password has been reset to default: 1234");
-      }
+      alert("Default admin username: admin\nDefault password: 1234 (or the last password you set).");
     }
   </script>
 </body>
