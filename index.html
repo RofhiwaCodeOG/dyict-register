@@ -15,13 +15,13 @@
       align-items: center;
     }
 
-    /* Phone mockup container */
-    .phone-frame {
-      background: #fff;
-      width: 360px;
-      height: 740px;
-      border-radius: 48px;
-      box-shadow: 0 16px 32px rgba(0,0,0,0.15), 0 0 0 12px #e0eafc;
+    .iphone-frame {
+      background: #f9f9f9;
+      width: 390px;
+      height: 844px;
+      border-radius: 60px;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.18), 0 0 0 14px #dbeafe;
+      border: 2px solid #d1d5db;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -30,39 +30,71 @@
       overflow: hidden;
     }
 
-    /* Top notch (optional, for realism) */
-    .phone-notch {
-      width: 120px;
-      height: 30px;
-      background: #e0eafc;
-      border-radius: 0 0 16px 16px;
+    /* Speaker bar and camera notch */
+    .iphone-notch {
+      width: 210px;
+      height: 38px;
       position: absolute;
       top: 0;
       left: 50%;
       transform: translateX(-50%);
       z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      pointer-events: none;
+    }
+    .notch-body {
+      background: #18181b;
+      height: 26px;
+      width: 160px;
+      border-radius: 18px 18px 18px 18px/12px 12px 22px 22px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .notch-speaker {
+      width: 44px;
+      height: 5px;
+      background: #333;
+      border-radius: 5px;
+      margin: 0 6px;
+      opacity: 0.5;
+    }
+    .notch-camera {
+      width: 12px;
+      height: 12px;
+      background: #222;
+      border-radius: 50%;
+      margin-left: 8px;
+      box-shadow: 0 0 2px 2px #666;
+      opacity: 0.8;
     }
 
+    /* App container inside the phone */
     .container {
-      width: 92%;
-      max-width: 340px;
+      width: 88%;
+      max-width: 350px;
       margin: 0 auto;
       background: transparent;
-      border-radius: 15px;
-      padding: 12px 0 0 0;
+      border-radius: 25px;
+      padding: 22px 0 0 0;
       box-shadow: none;
-      min-height: 0;
       height: 100%;
+      min-height: 0;
       overflow-y: auto;
       position: relative;
-      top: 40px;
+      top: 58px;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #4B0082;
-      font-size: 2rem;
+      margin-bottom: 18px;
+      color: #5F16D4;
+      font-size: 2.1rem;
+      font-family: 'San Francisco', Arial, sans-serif;
+      letter-spacing: 1px;
     }
 
     h3 { color: #333; }
@@ -72,17 +104,19 @@
     button {
       padding: 10px 15px;
       border: none;
-      border-radius: 8px;
-      margin: 5px;
+      border-radius: 10px;
+      margin: 6px;
       cursor: pointer;
       font-weight: bold;
       color: #fff;
+      font-size: 1rem;
       transition: 0.3s;
+      box-shadow: 0 2px 8px rgba(90,90,120,.07);
     }
-    button:hover { opacity: 0.9; }
+    button:hover { opacity: 0.92; }
 
     /* Button Colours */
-    button.primary { background: #007bff; }
+    button.primary { background: #5F16D4; }
     button.success { background: #28a745; }
     button.danger { background: #dc3545; }
     button.warning { background: #fd7e14; }
@@ -91,42 +125,48 @@
       padding: 10px;
       margin: 10px 0;
       width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      border: 1px solid #bbb;
+      border-radius: 10px;
+      font-size: 1.1rem;
       box-sizing: border-box;
-      font-size: 1rem;
     }
 
-    textarea { height: 140px; }
+    textarea { height: 130px; }
 
     .link {
-      color: #4B0082;
+      color: #5F16D4;
       cursor: pointer;
       text-decoration: underline;
       display: inline-block;
       margin-top: 10px;
+      font-size: 1rem;
     }
     .link:hover { color: #6f42c1; }
 
     .center { text-align: center; }
 
-    /* For mobile responsiveness (optional) */
-    @media (max-width: 400px) {
-      .phone-frame {
-        width: 96vw;
-        max-width: 400px;
-        height: 98vh;
-        border-radius: 32px;
+    /* For mobile responsiveness */
+    @media (max-width: 420px) {
+      .iphone-frame {
+        width: 99vw;
+        max-width: 420px;
+        height: 99vh;
+        border-radius: 38px;
       }
       .container {
-        max-width: 96vw;
+        max-width: 97vw;
       }
     }
   </style>
 </head>
 <body>
-  <div class="phone-frame">
-    <div class="phone-notch"></div>
+  <div class="iphone-frame">
+    <div class="iphone-notch">
+      <div class="notch-body">
+        <div class="notch-speaker"></div>
+        <div class="notch-camera"></div>
+      </div>
+    </div>
     <div class="container">
       <h1>DYICT Register</h1>
 
@@ -200,7 +240,7 @@
     </div>
   </div>
   <script>
-    // ... (your JS code remains unchanged)
+    // Your app logic, unchanged
     let students = {};
     const attendanceLog = [];
     const facilitators = {
