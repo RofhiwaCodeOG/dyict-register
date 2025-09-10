@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <title>DYICT Register</title>
   <style>
+    /* ===== Global Styles ===== */
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #f9f9f9);
       margin: 0;
       padding: 0;
       display: flex;
@@ -14,46 +15,134 @@
       align-items: flex-start;
       min-height: 100vh;
     }
+
     .container {
       margin-top: 40px;
-      width: 90%;
-      max-width: 600px;
+      width: 95%;
+      max-width: 650px;
       background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: 16px;
+      padding: 25px 30px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      animation: fadeIn 0.5s ease-in-out;
     }
+
     h1 {
       text-align: center;
-      margin-bottom: 20px;
-      color: #333;
+      margin-bottom: 25px;
+      font-size: 28px;
+      color: #2c3e50;
+      letter-spacing: 1px;
     }
-    .hidden { display: none; }
+
+    h3 {
+      margin: 15px 0;
+      font-size: 20px;
+      color: #34495e;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ===== Buttons ===== */
     button {
       background: #007bff;
       color: #fff;
-      padding: 10px 15px;
+      padding: 12px 18px;
       border: none;
-      border-radius: 6px;
-      margin: 5px;
+      border-radius: 8px;
+      margin: 8px;
       cursor: pointer;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      min-width: 120px;
     }
-    button:hover { background: #0056b3; }
-    select, input {
-      padding: 8px;
-      margin: 10px 0;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+
+    button:hover {
+      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-    textarea {
-      width: 100%;
-      height: 200px;
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: none;
+    }
+
+    /* ===== Inputs and Selects ===== */
+    select, input, textarea {
       padding: 10px;
-      border-radius: 6px;
+      margin: 12px 0;
+      width: 100%;
       border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: 0.2s;
     }
-    .center { text-align: center; }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.5);
+      outline: none;
+    }
+
+    textarea {
+      height: 220px;
+      resize: none;
+    }
+
+    /* ===== Center Utility ===== */
+    .center {
+      text-align: center;
+    }
+
+    /* ===== Animation ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Panels and Sections ===== */
+    #attendancePrompt {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    #attendanceDisplay textarea {
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    /* ===== Admin Panel Buttons ===== */
+    #adminPanel button {
+      background: #28a745;
+    }
+
+    #adminPanel button:hover {
+      background: #1e7e34;
+    }
+
+    #adminPanel button:nth-child(2) {
+      background: #ffc107;
+      color: #000;
+    }
+
+    #adminPanel button:nth-child(2):hover {
+      background: #e0a800;
+    }
+
+    #adminPanel button:nth-child(3) {
+      background: #dc3545;
+    }
+
+    #adminPanel button:nth-child(3):hover {
+      background: #c82333;
+    }
   </style>
 </head>
 <body>
@@ -88,8 +177,10 @@
     <!-- Attendance Marking -->
     <div id="attendanceSection" class="hidden">
       <h3 id="attendancePrompt"></h3>
-      <button onclick="markAttendance('Present')">Present</button>
-      <button onclick="markAttendance('Absent')">Absent</button>
+      <div class="center">
+        <button onclick="markAttendance('Present')">Present</button>
+        <button onclick="markAttendance('Absent')">Absent</button>
+      </div>
     </div>
 
     <!-- Admin Login -->
@@ -122,9 +213,9 @@
     const attendanceLog = [];
     const facilitators = {
       "Safari": "Mr Bila",
-      "Opera": "Mr joseph",
+      "Opera": "Mr Joseph",
       "Mozilla": "Mathapelo",
-      "Hanna": "jowi"
+      "Hanna": "Jowi"
     };
     let currentRole = "";
     let currentClass = "";
