@@ -55,6 +55,14 @@
     }
     .center { text-align: center; }
     .form-group { margin-bottom: 15px; }
+    .link {
+      color: #007bff;
+      cursor: pointer;
+      text-decoration: underline;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .link:hover { color: #0056b3; }
   </style>
 </head>
 <body>
@@ -100,6 +108,7 @@
       <input type="password" id="adminPass" placeholder="Password">
       <button onclick="adminLogin()">Login</button>
       <button onclick="goBack()">Back</button>
+      <div class="link" onclick="forgotPassword()">Forgot Password?</div>
     </div>
 
     <!-- Admin Panel -->
@@ -282,6 +291,15 @@
       localStorage.setItem("adminPassword", newPass);
       alert("Password successfully changed!");
       cancelChangePassword();
+    }
+
+    // Forgot Password → reset to default
+    function forgotPassword() {
+      if (confirm("Reset admin password to default (1234)?")) {
+        adminPassStored = "1234";
+        localStorage.setItem("adminPassword", "1234");
+        alert("Password has been reset to default: 1234");
+      }
     }
   </script>
 </body>
