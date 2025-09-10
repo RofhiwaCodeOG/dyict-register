@@ -9,26 +9,60 @@
       background: linear-gradient(135deg, #f4f6f9, #e0eafc);
       margin: 0;
       padding: 0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+      align-items: center;
+    }
+
+    /* Phone mockup container */
+    .phone-frame {
+      background: #fff;
+      width: 360px;
+      height: 740px;
+      border-radius: 48px;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.15), 0 0 0 12px #e0eafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Top notch (optional, for realism) */
+    .phone-notch {
+      width: 120px;
+      height: 30px;
+      background: #e0eafc;
+      border-radius: 0 0 16px 16px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
     }
 
     .container {
-      margin-top: 40px;
-      width: 90%;
-      max-width: 600px;
-      background: #fff;
+      width: 92%;
+      max-width: 340px;
+      margin: 0 auto;
+      background: transparent;
       border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      padding: 12px 0 0 0;
+      box-shadow: none;
+      min-height: 0;
+      height: 100%;
+      overflow-y: auto;
+      position: relative;
+      top: 40px;
     }
 
     h1 {
       text-align: center;
       margin-bottom: 20px;
       color: #4B0082;
+      font-size: 2rem;
     }
 
     h3 { color: #333; }
@@ -59,9 +93,11 @@
       width: 100%;
       border: 1px solid #ccc;
       border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 1rem;
     }
 
-    textarea { height: 200px; }
+    textarea { height: 140px; }
 
     .link {
       color: #4B0082;
@@ -73,82 +109,98 @@
     .link:hover { color: #6f42c1; }
 
     .center { text-align: center; }
+
+    /* For mobile responsiveness (optional) */
+    @media (max-width: 400px) {
+      .phone-frame {
+        width: 96vw;
+        max-width: 400px;
+        height: 98vh;
+        border-radius: 32px;
+      }
+      .container {
+        max-width: 96vw;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>DYICT Register</h1>
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+    <div class="container">
+      <h1>DYICT Register</h1>
 
-    <!-- Role Selection -->
-    <div id="roleSection">
-      <div class="center">
-        <button class="primary" onclick="chooseRole('Student')">Student</button>
-        <button class="primary" onclick="chooseRole('Facilitator')">Facilitator</button>
-        <button class="primary" onclick="chooseRole('Admin')">Admin</button>
+      <!-- Role Selection -->
+      <div id="roleSection">
+        <div class="center">
+          <button class="primary" onclick="chooseRole('Student')">Student</button>
+          <button class="primary" onclick="chooseRole('Facilitator')">Facilitator</button>
+          <button class="primary" onclick="chooseRole('Admin')">Admin</button>
+        </div>
       </div>
-    </div>
 
-    <!-- Class Selection -->
-    <div id="classSection" class="hidden">
-      <h3>Select your class:</h3>
-      <select id="classSelect">
-        <option value="Safari">Safari</option>
-        <option value="Opera">Opera</option>
-        <option value="Hanna">Hanna</option>
-        <option value="Mozilla">Mozilla</option>
-      </select>
-      <div id="studentInput" class="hidden">
-        <input type="number" id="studentNumber" placeholder="Enter your number (1–25)">
+      <!-- Class Selection -->
+      <div id="classSection" class="hidden">
+        <h3>Select your class:</h3>
+        <select id="classSelect">
+          <option value="Safari">Safari</option>
+          <option value="Opera">Opera</option>
+          <option value="Hanna">Hanna</option>
+          <option value="Mozilla">Mozilla</option>
+        </select>
+        <div id="studentInput" class="hidden">
+          <input type="number" id="studentNumber" placeholder="Enter your number (1–25)">
+        </div>
+        <button class="primary" onclick="proceedAttendance()">Proceed</button>
+        <button class="danger" onclick="goBack()">Back</button>
       </div>
-      <button class="primary" onclick="proceedAttendance()">Proceed</button>
-      <button class="danger" onclick="goBack()">Back</button>
-    </div>
 
-    <!-- Attendance Marking -->
-    <div id="attendanceSection" class="hidden">
-      <h3 id="attendancePrompt"></h3>
-      <button class="success" onclick="markAttendance('Present')">Present</button>
-      <button class="danger" onclick="markAttendance('Absent')">Absent</button>
-    </div>
+      <!-- Attendance Marking -->
+      <div id="attendanceSection" class="hidden">
+        <h3 id="attendancePrompt"></h3>
+        <button class="success" onclick="markAttendance('Present')">Present</button>
+        <button class="danger" onclick="markAttendance('Absent')">Absent</button>
+      </div>
 
-    <!-- Admin Login -->
-    <div id="adminLogin" class="hidden">
-      <h3>Admin Login</h3>
-      <input type="text" id="adminUser" placeholder="Username">
-      <input type="password" id="adminPass" placeholder="Password">
-      <button class="primary" onclick="adminLogin()">Login</button>
-      <button class="danger" onclick="goBack()">Back</button>
-      <div class="link" onclick="forgotPassword()">Forgot Password?</div>
-    </div>
+      <!-- Admin Login -->
+      <div id="adminLogin" class="hidden">
+        <h3>Admin Login</h3>
+        <input type="text" id="adminUser" placeholder="Username">
+        <input type="password" id="adminPass" placeholder="Password">
+        <button class="primary" onclick="adminLogin()">Login</button>
+        <button class="danger" onclick="goBack()">Back</button>
+        <div class="link" onclick="forgotPassword()">Forgot Password?</div>
+      </div>
 
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="hidden">
-      <h3>Admin Panel</h3>
-      <button class="primary" onclick="viewAttendance()">View Attendance</button>
-      <button class="warning" onclick="exportAttendance()">Export Attendance</button>
-      <button class="success" onclick="showChangePassword()">Change Password</button>
-      <button class="danger" onclick="logoutAdmin()">Back</button>
-    </div>
+      <!-- Admin Panel -->
+      <div id="adminPanel" class="hidden">
+        <h3>Admin Panel</h3>
+        <button class="primary" onclick="viewAttendance()">View Attendance</button>
+        <button class="warning" onclick="exportAttendance()">Export Attendance</button>
+        <button class="success" onclick="showChangePassword()">Change Password</button>
+        <button class="danger" onclick="logoutAdmin()">Back</button>
+      </div>
 
-    <!-- Attendance Display -->
-    <div id="attendanceDisplay" class="hidden">
-      <h3>Attendance Records</h3>
-      <textarea id="attendanceText" readonly></textarea>
-      <button class="danger" onclick="closeAttendanceDisplay()">Close</button>
-    </div>
+      <!-- Attendance Display -->
+      <div id="attendanceDisplay" class="hidden">
+        <h3>Attendance Records</h3>
+        <textarea id="attendanceText" readonly></textarea>
+        <button class="danger" onclick="closeAttendanceDisplay()">Close</button>
+      </div>
 
-    <!-- Change Password -->
-    <div id="changePasswordSection" class="hidden">
-      <h3>Change Admin Password</h3>
-      <input type="password" id="oldPass" placeholder="Enter current password">
-      <input type="password" id="newPass" placeholder="Enter new password">
-      <input type="password" id="confirmPass" placeholder="Confirm new password">
-      <button class="success" onclick="changePassword()">Save Password</button>
-      <button class="danger" onclick="cancelChangePassword()">Cancel</button>
+      <!-- Change Password -->
+      <div id="changePasswordSection" class="hidden">
+        <h3>Change Admin Password</h3>
+        <input type="password" id="oldPass" placeholder="Enter current password">
+        <input type="password" id="newPass" placeholder="Enter new password">
+        <input type="password" id="confirmPass" placeholder="Confirm new password">
+        <button class="success" onclick="changePassword()">Save Password</button>
+        <button class="danger" onclick="cancelChangePassword()">Cancel</button>
+      </div>
     </div>
   </div>
-
   <script>
+    // ... (your JS code remains unchanged)
     let students = {};
     const attendanceLog = [];
     const facilitators = {
