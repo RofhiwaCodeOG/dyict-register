@@ -15,21 +15,22 @@
       align-items: center;
     }
 
-.iphone-frame {
-  background: #f9f9f9 url("images/DYICT_LOGO.jpg") no-repeat center center;
-  background-size: cover;         /* This makes the image cover the whole background */
-  width: 390px;
-  height: 844px;
-  border-radius: 60px;
-  box-shadow: 0 18px 36px rgba(0,0,0,0.18), 0 0 0 14px #dbeafe;
-  border: 2px solid #d1d5db;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  overflow: hidden;
-}
+    .iphone-frame {
+      background: #f9f9f9;
+      width: 390px;
+      height: 844px;
+      border-radius: 60px;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.18), 0 0 0 14px #dbeafe;
+      border: 2px solid #d1d5db;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Speaker bar and camera notch */
     .iphone-notch {
       width: 210px;
       height: 38px;
@@ -70,6 +71,8 @@
       box-shadow: 0 0 2px 2px #666;
       opacity: 0.8;
     }
+
+    /* App container inside the phone */
     .container {
       width: 88%;
       max-width: 350px;
@@ -84,6 +87,7 @@
       position: relative;
       top: 58px;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 18px;
@@ -92,8 +96,11 @@
       font-family: 'San Francisco', Arial, sans-serif;
       letter-spacing: 1px;
     }
+
     h3 { color: #333; }
+
     .hidden { display: none; }
+
     button {
       padding: 10px 15px;
       border: none;
@@ -107,10 +114,13 @@
       box-shadow: 0 2px 8px rgba(90,90,120,.07);
     }
     button:hover { opacity: 0.92; }
+
+    /* Button Colours */
     button.primary { background: #5F16D4; }
     button.success { background: #28a745; }
     button.danger { background: #dc3545; }
     button.warning { background: #fd7e14; }
+
     select, input, textarea {
       padding: 10px;
       margin: 10px 0;
@@ -120,7 +130,9 @@
       font-size: 1.1rem;
       box-sizing: border-box;
     }
+
     textarea { height: 130px; }
+
     .link {
       color: #5F16D4;
       cursor: pointer;
@@ -130,7 +142,10 @@
       font-size: 1rem;
     }
     .link:hover { color: #6f42c1; }
+
     .center { text-align: center; }
+
+    /* For mobile responsiveness */
     @media (max-width: 420px) {
       .iphone-frame {
         width: 99vw;
@@ -153,7 +168,6 @@
       </div>
     </div>
     <div class="container">
-      <!-- (your app content here, unchanged from previous versions) -->
       <h1>DYICT Register</h1>
 
       <!-- Role Selection -->
@@ -226,7 +240,7 @@
     </div>
   </div>
   <script>
-
+    // Your app logic, unchanged
     let students = {};
     const attendanceLog = [];
     const facilitators = {
